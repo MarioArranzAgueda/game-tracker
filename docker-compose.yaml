@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gametracker
+      POSTGRES_PASSWORD: gametracker
+      POSTGRES_DB: gametracker
+    # Port exposure needed for local development from host machine
+    # For production on NAS, comment out or remove the ports section if not needed
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gametracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  app:
+    build: 
+      context: .
+      args:
+        DATABASE_URL: postgresql://gametracker:gametracker@db:5432/gametracker
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://gametracker:gametracker@db:5432/gametracker
+      TWITCH_CLIENT_ID: ${TWITCH_CLIENT_ID}
+      TWITCH_CLIENT_SECRET: ${TWITCH_CLIENT_SECRET}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/library"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  pgdata:

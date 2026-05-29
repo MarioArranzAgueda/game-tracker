@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum GameStatus {
+  WISHLIST
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FULL_COMPLETION
+}
+
+model Game {
+  igdbId        Int     @id @unique
+  title         String
+  description   String?
+  coverUrl      String?
+  releaseYear   Int?
+  developer     String?
+  avgRating     Decimal? @db.Decimal(5, 2)
+  durationHours Int?
+  rawData       Json?
+  userLibrary   UserLibrary[]
+}
+
+model UserLibrary {
+  id            Int        @id @default(autoincrement())
+  gameId        Int
+  game          Game       @relation(fields: [gameId], references: [igdbId])
+  status        GameStatus @default(WISHLIST)
+  personalScore Decimal?   @db.Decimal(5, 2)
+  personalNotes String?
+  isFavorite    Boolean    @default(false)
+  lastPlayedAt  DateTime?
+  sortOrder     Int?
+  addedAt       DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([status])
+  @@index([status, sortOrder])
+}
