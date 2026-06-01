@@ -1,0 +1,10 @@
+# Replace the hostname with your actual Tailscale machine name.
+# Find it at https://login.tailscale.com/admin/machines
+# Format: <machine-name>.<tailnet-name>.ts.net
+#
+# Example: gametracker-nas.tail1234ab.ts.net
+
+{$CADDY_HOSTNAME}:8444 {
+  tls /certs/{$CADDY_HOSTNAME}.crt /certs/{$CADDY_HOSTNAME}.key
+  reverse_proxy app:3000
+}

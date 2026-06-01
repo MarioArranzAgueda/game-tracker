@@ -8,8 +8,8 @@ services:
       POSTGRES_DB: gametracker
     # Port exposure needed for local development from host machine
     # For production on NAS, comment out or remove the ports section if not needed
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -17,14 +17,17 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
   app:
-    build: 
+    build:
       context: .
       args:
         DATABASE_URL: postgresql://gametracker:gametracker@db:5432/gametracker
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    # Port 3000 is NOT exposed externally — all traffic goes through Caddy (HTTPS).
+    # Uncomment only for local development without Caddy.
+    # ports:
+    #   - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
@@ -40,5 +43,23 @@ services:
       retries: 3
       start_period: 40s
 
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+      - "8444:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${CERTS_DIR:-./certs}:/certs:ro   # Tailscale cert + key go here
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      CADDY_HOSTNAME: ${CADDY_HOSTNAME}   # e.g. my-nas.tail1234ab.ts.net
+    depends_on:
+      - app
+
 volumes:
   pgdata:
+  caddy_data:
+  caddy_config:
