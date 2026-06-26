@@ -1,10 +1,72 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    <linearGradient id="shield" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#f97316"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" fill="url(#grad)"/>
-  <text x="256" y="310" font-family="Arial, sans-serif" font-size="180" font-weight="bold" fill="white" text-anchor="middle">GT</text>
+
+  <!-- Shield -->
+  <path d="M256 60
+           C180 100, 120 180, 120 280
+           C120 380, 190 440, 256 480
+           C322 440, 392 380, 392 280
+           C392 180, 332 100, 256 60Z"
+        fill="url(#shield)"/>
+
+  <!-- Controller -->
+  <g transform="translate(96 90)">
+    <path d="M70 40
+             C40 40, 20 70, 20 110
+             C20 150, 45 170, 80 170
+             L240 170
+             C275 170, 300 150, 300 110
+             C300 70, 280 40, 250 40Z"
+          fill="#0f172a" stroke="white" stroke-width="10" rx="20"/>
+
+    <!-- D-pad -->
+    <rect x="70" y="80" width="20" height="60" fill="white"/>
+    <rect x="50" y="100" width="60" height="20" fill="white"/>
+
+    <!-- Buttons -->
+    <circle cx="240" cy="90" r="12" fill="#22c55e"/>
+    <circle cx="270" cy="110" r="12" fill="#ef4444"/>
+    <circle cx="210" cy="110" r="12" fill="#eab308"/>
+    <circle cx="240" cy="140" r="12" fill="#38bdf8"/>
+  </g>
+
+  <!-- Checklist -->
+  <g transform="translate(170 220)">
+    <rect width="170" height="170" rx="18" fill="white"/>
+
+    <!-- Checks -->
+    <rect x="20" y="25" width="28" height="28" fill="#22c55e"/>
+    <polyline points="28,40 38,50 54,28" fill="none" stroke="white" stroke-width="5"/>
+
+    <rect x="20" y="75" width="28" height="28" fill="#f59e0b"/>
+    <polyline points="28,90 38,100 54,78" fill="none" stroke="white" stroke-width="5"/>
+
+    <rect x="20" y="125" width="28" height="28" fill="#3b82f6"/>
+    <polyline points="28,140 38,150 54,128" fill="none" stroke="white" stroke-width="5"/>
+
+    <!-- Lines -->
+    <rect x="70" y="30" width="80" height="10" rx="5" fill="#0f172a"/>
+    <rect x="70" y="80" width="80" height="10" rx="5" fill="#0f172a"/>
+    <rect x="70" y="130" width="80" height="10" rx="5" fill="#0f172a"/>
+  </g>
+
+  <!-- Checkmark -->
+  <polyline points="220,90 250,120 310,60"
+            fill="none" stroke="#0ea5e9" stroke-width="18"
+            stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Text -->
+  <text x="256" y="505"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="48"
+        font-weight="bold"
+        fill="#0f172a">
+    Game<tspan fill="#f97316">Tracker</tspan>
+  </text>
 </svg>

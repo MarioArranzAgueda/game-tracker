@@ -4,7 +4,13 @@
 #
 # Example: gametracker-nas.tail1234ab.ts.net
 
-{$CADDY_HOSTNAME}:8444 {
+# HTTPS only for Tailscale hostname
+{$CADDY_HOSTNAME} {
   tls /certs/{$CADDY_HOSTNAME}.crt /certs/{$CADDY_HOSTNAME}.key
+  reverse_proxy app:3000
+}
+
+# HTTP for local network access (no TLS needed on LAN)
+:80 {
   reverse_proxy app:3000
 }
