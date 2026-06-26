@@ -73,3 +73,11 @@ certs/
 dist/
 build/
 .turbo/
+
+# Build artifacts
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# Backup files
+*.bak
+*.backup
